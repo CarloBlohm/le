@@ -1,0 +1,19 @@
+#!/bin/bash
+
+export ACCOUNT_EMAIL=
+DOMAIN=
+EXTRA_DOMAINS=
+CERT_FILE=~/le/$DOMAIN.pem
+LOGFILE=~/le/le.log
+
+date >> $LOGFILE
+
+~/le/le.sh issue no $DOMAIN "$EXTRA_DOMAINS" 4096 &>> $LOGFILE
+if [ $? -eq 0 ]; then
+  ## put all together for haproxy
+  cat ~/.le/$DOMAIN/$DOMAIN.key > $CERT_FILE
+  cat ~/.le/$DOMAIN/$DOMAIN.cer >> $CERT_FILE
+  cat ~/.le/$DOMAIN/ca.cer >> $CERT_FILE
+fi
+
+exit 0
