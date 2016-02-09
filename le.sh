@@ -273,9 +273,9 @@ _startserver() {
   fi
 #  while true ; do
     if [ "$DEBUG" ] ; then
-      echo -e -n "HTTP/1.1 200 OK\r\n\r\n$content" | $_NC -l -p 80 -vv
+      echo -e -n "HTTP/1.1 200 OK\r\n\r\n$content" | $_NC -l -p 4280 -s 127.0.0.1 -vv
     else
-      echo -e -n "HTTP/1.1 200 OK\r\n\r\n$content" | $_NC -l -p 80 > /dev/null
+      echo -e -n "HTTP/1.1 200 OK\r\n\r\n$content" | $_NC -l -p 4280 -s 127.0.0.1 > /dev/null
     fi
 #  done
 }
@@ -524,10 +524,10 @@ issue() {
       return 1
     fi
 
-    netprc="$(ss -ntpl | grep ':80 ')"
+    netprc="$(ss -ntpl | grep '127.0.0.1:4280 ')"
     if [ "$netprc" ] ; then
       _err "$netprc"
-      _err "tcp port 80 is already used by $(echo "$netprc" | cut -d :  -f 4)"
+      _err "tcp port 127.0.0.1:4280 is already used by $(echo "$netprc" | cut -d :  -f 4)"
       _err "Please stop it first"
       return 1
     fi
